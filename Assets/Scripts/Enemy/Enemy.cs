@@ -1,92 +1,106 @@
-using System;
 using UnityEngine;
+using System; 
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private EnemyData data;
-    public EnemyData Data => data;
+    // 全局人口计数器
+    public static int TotalEnemiesAlive = 0;
 
-    public static event Action<EnemyData> OnEnemyReachedEnd;
-    public static event Action<Enemy> OnEnemyDestroyed;
+    public float MoveSpeed = 2f; 
+    
+    // 【新增】这个怪物走到终点会扣多少血？默认扣1点
+    public int DamageToPlayer = 1; 
 
-    private Path _currentPath;
+    public static event Action OnEnemyKilled; 
 
-    private Vector3 _targetPosition;
-    private int _currentWaypoint;
-    private float _lives;
-    private float _maxLives;
+    public EnemyHealth EnemyHealth { get; private set; }
 
-    [SerializeField] private Transform healthBar;
-    private Vector3 _healthBarOriginalScale;
-
-    private bool _hasBeenCounted = false;
-
-    private void Awake()
-    {
-        _currentPath = GameObject.Find("Path1").GetComponent<Path>();
-        _healthBarOriginalScale = healthBar.localScale;
-    }
+    private Waypoint _waypointScript; 
+    private int _waypointIndex;
 
     private void OnEnable()
     {
-        _currentWaypoint = 0;
-        _targetPosition = _currentPath.GetPosition(_currentWaypoint);
+        TotalEnemiesAlive++;
     }
 
-    void Update()
+    private void OnDisable()
     {
-        if (_hasBeenCounted) return;
+        TotalEnemiesAlive--;
+    }
 
-        // move towards target position
-        transform.position = Vector3.MoveTowards(transform.position, _targetPosition, data.speed * Time.deltaTime);
+    private void Awake()
+    {
+        EnemyHealth = GetComponent<EnemyHealth>();
+    }
 
-        // when target reached, set new target position
-        float relativeDistance = (transform.position - _targetPosition).magnitude;
-        if (relativeDistance < 0.1f)
+    private void Start()
+    {
+        _waypointScript = FindObjectOfType<Waypoint>();
+        
+        if (_waypointScript != null)
         {
-            if (_currentWaypoint < _currentPath.Waypoints.Length - 1)
+            transform.position = _waypointScript.GetWaypointPosition(0);
+        }
+    }
+
+    private void Update()
+    {
+        if (_waypointScript == null) return;
+        Move();
+    }
+
+    private void Move()
+    {
+        Vector3 targetPosition = _waypointScript.GetWaypointPosition(_waypointIndex);
+
+        transform.position = Vector2.MoveTowards(transform.position, targetPosition, MoveSpeed * Time.deltaTime);
+
+        if (Vector2.Distance(transform.position, targetPosition) < 0.1f)
+        {
+            if (_waypointIndex < _waypointScript.Points.Length - 1)
             {
-                _currentWaypoint++;
-                _targetPosition = _currentPath.GetPosition(_currentWaypoint);
+                _waypointIndex++;
             }
-            else // reached last waypoint
+            else
             {
-                _hasBeenCounted = true;
-                OnEnemyReachedEnd?.Invoke(data);
-                gameObject.SetActive(false);
+                // --- 到达终点逻辑 ---
+                
+                // 【核心修复】这里不再是注释了，真正调用扣血！
+                if (LevelManager.Instance != null)
+                {
+                    LevelManager.Instance.ReduceLives(DamageToPlayer);
+                }
+
+                // 销毁自己
+                Destroy(gameObject);
             }
         }
     }
 
-    public void TakeDamage(float damage)
+    public void ResetEnemy()
     {
-        if (_hasBeenCounted) return;
+        _waypointIndex = 0;
+        
+        if (_waypointScript == null) _waypointScript = FindObjectOfType<Waypoint>();
 
-        _lives -= damage;
-        _lives = Math.Max(_lives, 0);
-        UpdateHealthBar();
-
-        if (_lives <= 0)
+        if (_waypointScript != null)
         {
-            _hasBeenCounted = true;
-            OnEnemyDestroyed?.Invoke(this);
-            gameObject.SetActive(false);
+            transform.position = _waypointScript.GetWaypointPosition(0);
+        }
+
+        if (EnemyHealth != null)
+        {
+            EnemyHealth.ResetHealth();
         }
     }
 
-    private void UpdateHealthBar()
+    public void ResetEnemyAnimation()
     {
-        float healthPercent = _lives / _maxLives;
-        Vector3 scale = _healthBarOriginalScale;
-        scale.x = _healthBarOriginalScale.x * healthPercent;
-        healthBar.localScale = scale;
+        // 留空防止报错
     }
 
-    public void Initialize(float healthMultiplier)
+    public static void TriggerDeathEvent()
     {
-        _hasBeenCounted = false;
-        _maxLives = data.lives * healthMultiplier;
-        _lives = _maxLives;
-        UpdateHealthBar();
+        OnEnemyKilled?.Invoke();
     }
 }

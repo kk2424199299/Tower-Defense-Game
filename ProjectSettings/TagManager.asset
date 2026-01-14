@@ -2,9 +2,10 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 3
+  serializedVersion: 2
   tags:
   - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -12,9 +13,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Platform
-  - 
-  - 
+  - Projectile
+  - Turrets
+  - Enemy
   - 
   - 
   - 
@@ -42,17 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
-    uniqueID: 670184991
+  - name: Enemy
+    uniqueID: 618664699
     locked: 0
-  - name: Towers
-    uniqueID: 3964367537
+  - name: Turrets
+    uniqueID: 1078077929
     locked: 0
-  - name: Enemies
-    uniqueID: 2397224735
+  - name: Projectile
+    uniqueID: 2442664103
     locked: 0
   - name: UI
-    uniqueID: 3380060173
+    uniqueID: 2991242529
     locked: 0
-  m_RenderingLayers:
-  - Default

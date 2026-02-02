@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9082237363004365249}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: ProjectileSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9082237363008483135}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: RotatePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9082237363469648134}
   - component: {fileID: 9082237363469648135}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: turret_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9082237364136714201}
   - component: {fileID: 9082237364136714206}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,8 +245,7 @@ GameObject:
   - component: {fileID: 9082237364592922150}
   - component: {fileID: 9082237364592922330}
   - component: {fileID: 9082237364592922149}
-  - component: {fileID: 8222585232809206513}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: One_missile_turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,19 +329,3 @@ MonoBehaviour:
   - tag: Bullet
     prefab: {fileID: 4115457650005452143, guid: 87af1adf90ed5ce4c86dc1879d5a7831, type: 3}
     size: 20
---- !u!114 &8222585232809206513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9082237364592922145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cee5862ab8ac9904facf1f70f53b617c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 1
-  UpgradeCost: 100
-  SellValue: 50
-  UpgradeDelayReduce: 0.2

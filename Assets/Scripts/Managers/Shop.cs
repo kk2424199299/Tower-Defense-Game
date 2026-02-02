@@ -2,38 +2,43 @@ using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    [Header("Turret Prefabs")]
-    public GameObject standardTurretPrefab;
-    public GameObject machineGunTurretPrefab;
-    public GameObject tankTurretPrefab;
+    [Header("塔的图纸配置")]
+    // 1. 标准塔
+    public TurretBlueprint standardTurret;
+    
+    // 2. 坦克塔 (Tank)
+    public TurretBlueprint tankTurret;
+    
+    // 3. 机枪塔 (Machine Gun)
+    public TurretBlueprint machineGunTurret;
 
-    [Header("Costs")]
-    public int standardTurretCost = 100;
-    public int machineGunTurretCost = 250;
-    public int tankTurretCost = 500;
-
-    private BuildManager _buildManager;
+    private BuildManager buildManager;
 
     private void Start()
     {
-        _buildManager = BuildManager.Instance;
+        buildManager = BuildManager.Instance;
     }
 
-    // --- 下面这些方法要绑定到 UI 按钮上 ---
+    // --- 按钮点击事件 (记得去Unity里重新绑定!) ---
 
+    // 按钮 1：选中标准塔
     public void SelectStandardTurret()
     {
-        // 告诉 BuildManager：我选中了标准塔，价格是 100
-        _buildManager.SelectTurretToBuild(standardTurretPrefab, standardTurretCost);
+        Debug.Log("选中了标准塔 (Standard)");
+        buildManager.SelectTurretToBuild(standardTurret);
     }
 
-    public void SelectMachineGunTurret()
-    {
-        _buildManager.SelectTurretToBuild(machineGunTurretPrefab, machineGunTurretCost);
-    }
-
+    // 按钮 2：选中坦克塔
     public void SelectTankTurret()
     {
-        _buildManager.SelectTurretToBuild(tankTurretPrefab, tankTurretCost);
+        Debug.Log("选中了坦克塔 (Tank)");
+        buildManager.SelectTurretToBuild(tankTurret);
+    }
+
+    // 按钮 3：选中机枪塔
+    public void SelectMachineGunTurret()
+    {
+        Debug.Log("选中了机枪塔 (Machine Gun)");
+        buildManager.SelectTurretToBuild(machineGunTurret);
     }
 }

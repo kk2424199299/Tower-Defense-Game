@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 20
-  damage: 1
+  damage: 1.5
   minDistanceToDealDamage: 1.5
   maxLifeTime: 4
+  hitSound: {fileID: 8300000, guid: 87f7d5afe8e263a41b21570c384ef375, type: 3}

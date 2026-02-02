@@ -15,4 +15,4 @@ MonoBehaviour:
   Title: Hunter Kill 10 Enemy
   TargetCount: 10
   Reward: 100
-  Icon: {fileID: -1971715972, guid: d6b90654520427f4abcf22160ce0e836, type: 3}
+  Icon: {fileID: 21300000, guid: 0edf1224217cadb449c59eff219a721a, type: 3}

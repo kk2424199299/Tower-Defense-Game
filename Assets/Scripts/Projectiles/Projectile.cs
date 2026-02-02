@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    // 现在代码会听从 Inspector 面板的设置了
-    // 所以请确保面板里填的是 Speed=20, Distance=1.5
+    // 这些参数会覆盖 Inspector 里的设置，确保它们是你想要的数值
     [SerializeField] private float moveSpeed = 20f; 
-    [SerializeField] private float damage = 2f;
+    [SerializeField] private float damage = 1.5f;
     [SerializeField] private float minDistanceToDealDamage = 1.5f; 
     [SerializeField] private float maxLifeTime = 4.0f; 
+
+    [Header("Audio")]
+    // 【关键】这里用来放击中音效
+    [SerializeField] private AudioClip hitSound; 
 
     public static Action<Enemy, float> OnEnemyHit;
     private Enemy _enemyTarget;
@@ -33,17 +36,19 @@ public class Projectile : MonoBehaviour
             return;
         }
 
+        // 飞向敌人
         transform.position = Vector2.MoveTowards(transform.position,
             _enemyTarget.transform.position, moveSpeed * Time.deltaTime);
 
         float distance = Vector2.Distance(transform.position, _enemyTarget.transform.position);
         
-        // 这里会使用你在面板里填的数值 (1.5)
+        // 距离足够近，判定为击中
         if (distance < minDistanceToDealDamage)
         {
             HitEnemy();
         }
 
+        // 超时回收
         _lifeTimer -= Time.deltaTime;
         if (_lifeTimer <= 0)
         {
@@ -53,28 +58,31 @@ public class Projectile : MonoBehaviour
 
     private void HitEnemy()
     {
+        // 1. 扣血
         if (_enemyTarget.EnemyHealth != null)
         {
             _enemyTarget.EnemyHealth.DealDamage(damage);
         }
 
+        // 2. 【核心逻辑】播放击中音效
+        // PlaySFX 允许声音重叠，所以多个子弹同时打中也没问题
+        if (AudioManager.Instance != null && hitSound != null)
+        {
+            AudioManager.Instance.PlaySFX(hitSound);
+        }
+
+        // 3. 触发飘字等特效
         try {
             OnEnemyHit?.Invoke(_enemyTarget, damage);
         } catch { }
 
+        // 4. 子弹消失（回池）
         ObjectPooler.ReturnToPool(gameObject);
     }
 
     public void SetEnemy(Enemy enemy)
     {
         _enemyTarget = enemy;
-        _hasFired = true; 
-    }
-
-    public void ResetProjectile()
-    {
-        _enemyTarget = null;
-        _hasFired = false; 
-        transform.localRotation = Quaternion.identity;
+        _hasFired = true;
     }
 }

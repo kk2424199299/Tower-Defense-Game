@@ -1,40 +1,76 @@
 using UnityEngine;
 
-public class BuildManager : Singleton<BuildManager>
+public class BuildManager : MonoBehaviour
 {
-    // 当前准备建造的塔（预制体）
-    private GameObject _turretToBuild;
-    
-    // 当前塔的价格
-    private int _turretCost;
+    public static BuildManager Instance;
 
-    // 获取当前要造的塔
-    public GameObject GetTurretToBuild()
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("场景里有多个 BuildManager!");
+            return;
+        }
+        Instance = this;
+    }
+
+    // 【修改】这里不再存 GameObject，而是存图纸
+    private TurretBlueprint _turretToBuild;
+    private Node _selectedNode;
+
+    // 建造特效 (可选)
+    public GameObject buildEffect;
+    public GameObject sellEffect;
+
+    // --- 属性 ---
+
+    // 检查是否有权建造
+    public bool CanBuild { get { return _turretToBuild != null; } }
+    // 检查钱够不够
+    public bool HasMoney { get { return LevelManager.Instance.TotalCurrency >= _turretToBuild.cost; } }
+
+    // --- 方法 ---
+
+    // 让外部 (Node) 获取当前要造什么
+    public TurretBlueprint GetTurretToBuild()
     {
         return _turretToBuild;
     }
-    
-    // 获取当前塔的价格
-    public int GetTurretCost()
-    {
-        return _turretCost;
-    }
 
-    // 商店选中某个塔时调用这个方法
-    public void SelectTurretToBuild(GameObject turret, int cost)
+    // 让外部 (Shop) 选定要造什么
+    public void SelectTurretToBuild(TurretBlueprint turret)
     {
         _turretToBuild = turret;
-        _turretCost = cost;
-        Debug.Log("已选中: " + turret.name + " | 价格: " + cost);
+        _selectedNode = null; // 选了造塔，就取消选中底座
+    }
+
+    // 选中地图上的底座 (用于升级/出售)
+    public void SelectNode(Node node)
+    {
+        if (_selectedNode == node)
+        {
+            DeselectNode();
+            return;
+        }
+
+        _selectedNode = node;
+        _turretToBuild = null; // 选了底座，就取消造塔模式
+
+        // 呼叫 UI 显示
+        NodeUI.Instance.SetTarget(node);
+    }
+
+    public void DeselectNode()
+    {
+        _selectedNode = null;
+        NodeUI.Instance.Hide();
     }
     
-    // 检查是否处于“建造模式”（手里有没有塔）
-    public bool CanBuild { get { return _turretToBuild != null; } }
-    
-    // 造完或者取消时，清空手里的塔
+    // 重置状态
     public void ResetBuild()
     {
+        _selectedNode = null;
         _turretToBuild = null;
-        _turretCost = 0;
+        NodeUI.Instance.Hide();
     }
 }

@@ -8,11 +8,13 @@ public class AchievementCard : MonoBehaviour
     public Image IconImage;           
     public TextMeshProUGUI TitleTxt;  
     public TextMeshProUGUI ProgressTxt; 
-    public TextMeshProUGUI RewardTxt;   // 这是显示 "$100" 的
-    public Button ClaimButton;          // 这是按钮本身
-    
-    // 【新增】专门用来控制按钮上的 "CLAIM" 文字
+    public TextMeshProUGUI RewardTxt;   
+    public Button ClaimButton;          
     public TextMeshProUGUI ClaimBtnText; 
+
+    [Header("Audio")]
+    // 【关键】这里用来放领奖音效
+    public AudioClip claimSound;
 
     private Achievement _data;          
 
@@ -47,37 +49,40 @@ public class AchievementCard : MonoBehaviour
         {
             ClaimButton.interactable = false;
             ProgressTxt.color = Color.gray;
-            
-            // 【修改】直接使用变量，不再瞎找了
             if (ClaimBtnText != null) ClaimBtnText.text = "CLAIMED";
         }
         else if (_data.currentProgress >= _data.TargetCount)
         {
             ClaimButton.interactable = true;
             ProgressTxt.color = Color.green;
-            
-            // 【修改】
             if (ClaimBtnText != null) ClaimBtnText.text = "CLAIM";
         }
         else
         {
             ClaimButton.interactable = false;
             ProgressTxt.color = Color.white;
-            
-            // 【修改】未完成时也显示 CLAIM
             if (ClaimBtnText != null) ClaimBtnText.text = "CLAIM";
         }
     }
 
+    // 点击按钮时会调用这个方法
     public void ClaimReward()
     {
+        // 只有没领过，且进度达标了才能领
         if (!_data.isClaimed && _data.currentProgress >= _data.TargetCount)
         {
             _data.isClaimed = true;
 
+            // 加钱
             if (LevelManager.Instance != null)
             {
                 LevelManager.Instance.AddCurrency(_data.Reward);
+            }
+
+            // 【核心逻辑】播放领奖音效
+            if (AudioManager.Instance != null && claimSound != null)
+            {
+                AudioManager.Instance.PlaySFX(claimSound);
             }
 
             UpdateUI();

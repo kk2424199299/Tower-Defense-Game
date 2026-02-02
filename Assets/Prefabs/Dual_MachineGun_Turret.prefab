@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 480951675325142221}
   - component: {fileID: 8672557682292691563}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4284518058533933110}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: RotatePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6086007700696288599}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: ProjectileSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6264069929416331540}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: ProjectileSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1009230884480639292}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: ProjectileSpawnPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3130062693793292686}
   - component: {fileID: 619638484010350575}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: turret_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5659305406078068047}
   - component: {fileID: 6220297983702073994}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: turret_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -394,8 +394,7 @@ GameObject:
   - component: {fileID: 5399372216813019424}
   - component: {fileID: 1498803552218446989}
   - component: {fileID: 9198150543258276378}
-  - component: {fileID: 6286628445474220528}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Dual_MachineGun_Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,22 +478,6 @@ MonoBehaviour:
   - tag: Bullet
     prefab: {fileID: 6810636563244956229, guid: 00ab77e46bff4ac428c2e2ee7b29b391, type: 3}
     size: 200
---- !u!114 &6286628445474220528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7271781750676643854}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cee5862ab8ac9904facf1f70f53b617c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Level: 1
-  UpgradeCost: 250
-  SellValue: 200
-  UpgradeDelayReduce: 0.2
 --- !u!1 &8256116170253049488
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +488,7 @@ GameObject:
   m_Component:
   - component: {fileID: 372779532318159414}
   - component: {fileID: 2147809630802427469}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: turret_Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement; // 必须引用
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -14,16 +14,20 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private int startingLives = 10;
     [SerializeField] private TextMeshProUGUI livesText;
 
-    [Header("UI")]
+    [Header("UI Panels")]
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject gameWinPanel;
+
+    [Header("Audio Clips")]
+    // 【新增】金币音效 (记得把下载的音频拖进来)
+    [SerializeField] private AudioClip coinSound; 
 
     public int TotalCurrency { get; set; }
     public int TotalLives { get; set; }
 
     private void Start()
     {
-        // 【关键修复】强制恢复游戏时间，防止上一局结束后时间停留在 0
+        // 强制恢复游戏时间
         Time.timeScale = 1f;
 
         TotalCurrency = startingCurrency;
@@ -37,6 +41,12 @@ public class LevelManager : Singleton<LevelManager>
     {
         TotalCurrency += amount;
         UpdateCurrencyUI();
+
+        // 【新增】播放金币音效
+        if (AudioManager.Instance != null && coinSound != null)
+        {
+            AudioManager.Instance.PlaySFX(coinSound);
+        }
     }
 
     public bool RemoveCurrency(int amount)
@@ -52,7 +62,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void UpdateCurrencyUI()
     {
-        currencyText.text = TotalCurrency.ToString();
+        if (currencyText != null) currencyText.text = TotalCurrency.ToString();
     }
 
     public void ReduceLives(int damage)
@@ -69,7 +79,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private void UpdateLivesUI()
     {
-        livesText.text = TotalLives.ToString();
+        if (livesText != null) livesText.text = TotalLives.ToString();
     }
 
     private void GameOver()
@@ -92,9 +102,17 @@ public class LevelManager : Singleton<LevelManager>
         Time.timeScale = 0; 
     }
 
+    // --- 场景控制 ---
+
     public void RestartLevel()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 }

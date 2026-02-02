@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: a7fdd6cf2b1765d43befe48347a1cbb5
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Futurino
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: b5fc878f68b2bd245bdcffbaedc58ad6, type: 3}
+  - {fileID: 12800000, guid: c69fa2e19435a9a408f683270abe88fb, type: 3}
+  - {fileID: 12800000, guid: d44b0dba54cf22a43a2d73896472f1d7, type: 3}
+  - {fileID: 12800000, guid: cc50528d8ea938f4f86e385297fc8138, type: 3}
+  - {fileID: 12800000, guid: 7fc9bd8211f7e724fa12cc39d144b90c, type: 3}
+  - {fileID: 12800000, guid: 3cc4f2812dc458143aad47ddd52c32f4, type: 3}
+  - {fileID: 12800000, guid: 0e8db48e54ae04248bb4eae1dc71a0dd, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
